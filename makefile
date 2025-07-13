@@ -16,8 +16,8 @@ TESTS= -g -DLUA_USER_H='"ltests.h"'
 LOCAL = $(CWARNS)
 
 
-CC= g++
-CFLAGS= -Wall -Wno-deprecated -std=c++17 $(MYCFLAGS) -O2
+CC= em++
+CFLAGS=  -Wall -Wno-deprecated -std=c++17 $(MYCFLAGS) -O2
 AR= ar rcu
 RANLIB= ranlib
 RM= rm -f
@@ -33,7 +33,7 @@ MYCFLAGS= $(LOCAL) -DLUA_USE_LINUX
 MYLDFLAGS= -Wl,-E
 MYLIBS= -ldl
 endif
-MYLIBS= -lreadline -lhistory
+MYLIBS=  # MYLIBS= -lreadline -lhistory disabled since are not supported by emscripten 
 
 
 
@@ -76,8 +76,7 @@ $(LUAC_T): $(LUAC_O) $(CORE_T)
 	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(CORE_T) $(LIBS) $(MYLIBS)
 
 clean:
-	rcsclean -u || true
-	$(RM) $(ALL_T) $(ALL_O)
+	$(RM) $(ALL_T) $(ALL_O) $(LUA_T).wasm
 
 depend:
 	@$(CC) $(CFLAGS) -MM *.c
